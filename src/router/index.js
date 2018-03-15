@@ -30,44 +30,59 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/dashboard',
     name: 'Dashboard',
-    hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
-    }]
+    hidden: true
   },
 
   {
-    path: '/example',
+    path: '',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'home' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/article',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'article',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: '文章管理', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/sysmanage',
+    component: Layout,
+    redirect: '/sysmanage/user',
+    name: 'sysmanage',
+    meta: { title: '系统管理', icon: 'example' },
+    children: [
+      {
+        path: 'user',
+        name: 'user',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'tree' }
+      },
+      {
+        path: 'table',
+        name: 'table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '用户管理', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '模版管理', icon: 'tree' }
       }
     ]
   },
