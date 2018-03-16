@@ -1,7 +1,10 @@
 <template>
   <div class="menu-wrapper">
+    <div class="logo-con">
+        <img v-show="sidebar.opened" :src="logoImg" key="max-logo" />
+        <!-- <img v-show="!sidebar.opened" :src="logoMinImg" key="min-logo" /> -->
+    </div>
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
       <router-link v-if="item.children.length===1 && !item.children[0].children && !item.alwaysShow" :to="item.path+'/'+item.children[0].path" :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
@@ -32,8 +35,22 @@
 </template>
 
 <script>
+import logoImg from '@/assets/images/logo.png'
+import logoMinImg from '@/assets/images/logo-min.png'
+
 export default {
   name: 'SidebarItem',
+  data() {
+    return {
+      logoImg,
+      logoMinImg
+    }
+  },
+  computed: {
+    sidebar() {
+      return this.$store.state.app.sidebar
+    }
+  },
   props: {
     routes: {
       type: Array

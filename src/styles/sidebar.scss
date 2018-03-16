@@ -3,11 +3,11 @@
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: 180px;
+    margin-left: 200px;
   } // 侧边栏
   .sidebar-container {
     transition: width 0.28s;
-    width: 180px!important;
+    width: 200px!important;
     height: 100%;
     position: fixed;
     top: 0;
@@ -96,5 +96,13 @@
   }
   .el-menu--collapse .el-menu .el-submenu{
     min-width: 180px!important;
+  }
+  .logo-con{
+    padding: 8px;
+    text-align: center;
+    img{
+        height: 44px;
+        width: auto;
+    }
   }
 }
