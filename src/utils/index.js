@@ -6,7 +6,7 @@ export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
-  const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+  const format = cFormat || '{y}-{m}-{d} {h}:{i}'
   let date
   if (typeof time === 'object') {
     date = time
@@ -55,4 +55,21 @@ export function formatTime(time, option) {
   } else {
     return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
   }
+}
+
+// 构建排序参数
+export function formatSort(sort) {
+  if (sort.order === null) {
+    return undefined
+  }
+  let order = 'asc'
+  switch (sort.order) {
+    case 'descending':
+      order = 'desc'
+      break
+    case 'ascending':
+      order = 'asc'
+      break
+  }
+  return sort.prop + ',' + order
 }
