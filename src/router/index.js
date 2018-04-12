@@ -26,6 +26,19 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
+    path: '/article',
+    component: Layout,
+    children: [
+      {
+        path: 'form',
+        name: 'form',
+        component: () => import('@/views/article/form'),
+        meta: { title: '发布文章', icon: 'form' }
+      }
+    ],
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -49,40 +62,49 @@ export const constantRouterMap = [
   {
     path: '/article',
     component: Layout,
+    redirect: '/article/index',
     children: [
       {
         path: 'index',
         name: 'article',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/article/index'),
         meta: { title: '文章管理', icon: 'form' }
       }
     ]
   },
 
   {
-    path: '/sysmanage',
+    path: '/meta',
     component: Layout,
-    redirect: '/sysmanage/user',
-    name: 'sysmanage',
+    redirect: '/meta/index',
+    children: [
+      {
+        path: 'index',
+        name: 'meta',
+        component: () => import('@/views/meta/index'),
+        meta: { title: '分类/标签', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/sys',
+    component: Layout,
+    redirect: '/sys/user',
+    name: 'sys',
     meta: { title: '系统管理', icon: 'example' },
     children: [
       {
         path: 'user',
         name: 'user',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/sys/user/index'),
         meta: { title: '用户管理', icon: 'tree' }
       },
       {
-        path: 'table',
-        name: 'table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '用户管理', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '模版管理', icon: 'tree' }
+        path: 'template',
+        name: 'template',
+        component: () => import('@/views/sys/tpl/index'),
+        meta: { title: '模板管理', icon: 'tree' }
       }
     ]
   },

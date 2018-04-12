@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
-export function getUserList(params) {
+export function getMetaList(params) {
   return request({
-    url: '/user/list',
+    url: '/meta/list',
     method: 'get',
     params
   })
 }
 
-export function createUser(data, pass) {
+export function createMeta(data, pass) {
   return request({
-    url: '/user/create',
+    url: '/meta/create',
     method: 'post',
     params: {
       password: pass
@@ -19,9 +19,9 @@ export function createUser(data, pass) {
   })
 }
 
-export function updateUser(data, pass) {
+export function updateMeta(data, pass) {
   return request({
-    url: '/user/update',
+    url: '/meta/update',
     method: 'post',
     params: {
       password: pass
@@ -30,9 +30,9 @@ export function updateUser(data, pass) {
   })
 }
 
-export function delUser(id) {
+export function delMeta(id) {
   return request({
-    url: '/user/del',
+    url: '/meta/del',
     method: 'get',
     params: {
       id: id
@@ -40,12 +40,22 @@ export function delUser(id) {
   })
 }
 
-export function delBatchUser(idArr) {
+export function delBatchMeta(idArr) {
   return request({
-    url: '/user/delBatch',
+    url: '/meta/delBatch',
     method: 'get',
     params: {
       idArr: idArr
+    }
+  })
+}
+
+export function searchMeta(name) {
+  return request({
+    url: '/meta/search',
+    method: 'get',
+    params: {
+      name: name
     }
   })
 }
