@@ -14,18 +14,31 @@
 
       <div class="createPost-main-container">
         <el-row>
-          <el-col :span="21">
+          <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput name="name" v-model="postForm.title" required :maxlength="100">
                 标题
               </MDinput>
             </el-form-item>
-
-            <el-form-item label-width="45px" label="分类:" class="postInfo-container-item" style="z-index:2;">
-              <multiselect v-model="postForm.typeids" :options="typeListOptions" :multiple="true" @search-change="getRemoteTypeList" placeholder="选择分类" selectLabel="选择"
-                deselectLabel="删除" track-by="id" :internalSearch="false" label="name">
-                <span slot='noResult'>无结果</span>
-              </multiselect>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="分类:" class="postInfo-container-item">
+              <el-select style="width:80%;" v-model="postForm.typeids" multiple filterable remote reserve-keyword placeholder="请选择分类" :remote-method="getRemoteTypeList" :loading="loading">
+                <el-option v-for="item in typeListOptions" :key="item.id" :label="item.name" :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="标签:" class="postInfo-container-item">
+              <el-tag :key="tag" v-for="tag in postForm.tagnames" closable :disable-transitions="false" @close="handleClose(tag)">
+                {{tag}}
+              </el-tag>
+              <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+              </el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -38,6 +51,23 @@
 
   </div>
 </template>
+
+<style>
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+</style>
 
 <script>
 import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，element-ui的select不能满足所有需求
@@ -53,7 +83,7 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   typeids: [], // 文章类型
-  tags: '', // 文章标签
+  tagnames: [], // 文章标签
   id: undefined,
   is_comment: false // 是否可以评论
 }
@@ -76,6 +106,8 @@ export default {
       }
     }
     return {
+      inputVisible: false,
+      inputValue: '',
       postForm: Object.assign({}, defaultForm),
       loading: false,
       typeListOptions: [],
@@ -95,6 +127,23 @@ export default {
     }
   },
   methods: {
+    handleInputConfirm() {
+      const inputValue = this.inputValue
+      if (inputValue) {
+        this.postForm.tagnames.push(inputValue)
+      }
+      this.inputVisible = false
+      this.inputValue = ''
+    },
+    showInput() {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleClose(tag) {
+      this.postForm.tagnames.splice(this.postForm.tagnames.indexOf(tag), 1)
+    },
     fetchData(id) {
       fetchArticle().then(response => {
         this.postForm = response.data
@@ -141,7 +190,6 @@ export default {
     getRemoteTypeList(query) {
       searchMeta(query).then(data => {
         if (!data) return
-        console.log(data)
         this.typeListOptions = data.map(v => ({
           id: v.id,
           name: v.name

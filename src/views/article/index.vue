@@ -20,7 +20,7 @@
           {{scope.row.title}}
         </template>
       </el-table-column>
-      <el-table-column label="发布时间" prop="createdTime" width="110" align="center" sortable='custom'>
+      <el-table-column label="发布时间" prop="createdTime" width="180" align="center" sortable='custom'>
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{scope.row.createdTime|timeFormatter}}</span>
@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column label="所属分类" width="100">
         <template slot-scope="scope">
-          <span>{{scope.row.type}}</span>
+          <span>{{scope.row.categories}}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" width="100" align="center">
