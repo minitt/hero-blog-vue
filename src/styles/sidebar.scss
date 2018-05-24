@@ -6,7 +6,11 @@
     margin-left: 200px;
   } // 侧边栏
   .sidebar-container {
+    background: #00142a;
     transition: width 0.28s;
+    &.is-active{
+      width: 64px !important;
+    }
     width: 200px!important;
     height: 100%;
     position: fixed;

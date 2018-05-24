@@ -22,7 +22,9 @@
       </el-table-column>
       <el-table-column label="类型" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.type}}</span>
+          <el-tag
+          :type="scope.row.type === 'tag' ? 'primary' : 'success'"
+          disable-transitions>{{scope.row.type|typeFormatter}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="排序" width="110" align="center" sortable='custom'>
@@ -254,6 +256,14 @@ export default {
   filters: {
     timeFormatter(cellValue) {
       return cellValue != null ? parseTime(cellValue) : null
+    },
+    typeFormatter(cellValue) {
+      switch (cellValue) {
+        case 'tag':
+          return '标签'
+        case 'category':
+          return '分类'
+      }
     }
   }
 }

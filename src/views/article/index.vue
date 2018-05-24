@@ -38,7 +38,9 @@
       </el-table-column>
       <el-table-column label="状态" width="100" align="center">
         <template slot-scope="scope">
-          {{scope.row.status}}
+          <el-tag
+          :type="scope.row.status === 'publish' ? 'primary' : 'success'"
+          disable-transitions>{{scope.row.status|statusFormatter}}</el-tag>
         </template>
       </el-table-column>
 	  <el-table-column align="center" label="相关操作" width="130" class-name="small-padding fixed-width">
@@ -172,6 +174,14 @@ export default {
   filters: {
     timeFormatter(cellValue) {
       return cellValue != null ? parseTime(cellValue) : null
+    },
+    statusFormatter(cellValue) {
+      switch (cellValue) {
+        case 'publish':
+          return '已发布'
+        case 'draft':
+          return '草稿'
+      }
     }
   }
 }

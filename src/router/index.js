@@ -105,6 +105,12 @@ export const constantRouterMap = [
         name: 'template',
         component: () => import('@/views/sys/tpl/index'),
         meta: { title: '模板管理', icon: 'tree' }
+      },
+      {
+        path: 'sysconfig',
+        name: 'sysconfig',
+        component: () => import('@/views/sys/sysconfig/index'),
+        meta: { title: '系统配置', icon: 'tree' }
       }
     ]
   },

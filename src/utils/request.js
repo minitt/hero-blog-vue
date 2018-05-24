@@ -54,9 +54,30 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error)// for debug
+    const res = error.response
+    let errorMsg
+    switch (res.status) {
+      case 400:
+        errorMsg = '错误请求'
+        break
+      case 401:
+        errorMsg = '未授权'
+        break
+      case 403:
+        errorMsg = '服务器拒绝请求'
+        break
+      case 404:
+        errorMsg = '未找到'
+        break
+      case 500:
+        errorMsg = '服务器内部错误'
+        break
+      default:
+        errorMsg = '错误'
+        break
+    }
     Message({
-      message: error.message,
+      message: errorMsg,
       type: 'error',
       duration: 5 * 1000
     })

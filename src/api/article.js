@@ -8,12 +8,13 @@ export function getArticleList(params) {
   })
 }
 
-export function createArticle(data, typeids) {
+export function createArticle(data, typeids, tagnames) {
   return request({
     url: '/article/create',
     method: 'post',
     params: {
-      typeids: typeids
+      typeids: typeids,
+      tagnames: tagnames
     },
     data
   })

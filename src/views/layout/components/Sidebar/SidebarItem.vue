@@ -1,17 +1,5 @@
 <template>
   <div class="menu-wrapper">
-    <div class="logo-con">
-      <div v-show="sidebar.opened" class="text-center p-t-10" style="margin: 0 auto;">
-        <div class="pull-left" style="padding-left: 10px;">
-            <router-link to="/">
-              <img :src="logoImg" key="max-logo" width="50" height="50" />
-            </router-link>
-        </div>
-        <div class="pull-left" style="padding-left: 10px;">
-            <span style="font-size: 28px; color: #ffffff; line-height: 50px;">HEIROU</span>
-        </div>
-      </div>
-    </div>
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
       <router-link v-if="item.children.length===1 && !item.children[0].children && !item.alwaysShow" :to="item.path+'/'+item.children[0].path" :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
@@ -70,3 +58,16 @@ export default {
   }
 }
 </script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .fade-leave-active {
+    transition: opacity 0.2s;
+  }
+  .fade-enter-active {
+    transition: opacity 2.5s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>

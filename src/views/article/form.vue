@@ -25,7 +25,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="分类:" class="postInfo-container-item">
-              <el-select style="width:80%;" v-model="postForm.typeids" multiple filterable remote reserve-keyword placeholder="请选择分类" :remote-method="getRemoteTypeList" :loading="loading">
+              <el-select style="width:80%;" v-model="typeids" multiple filterable remote reserve-keyword placeholder="请选择分类" :remote-method="getRemoteTypeList" :loading="loading">
                 <el-option v-for="item in typeListOptions" :key="item.id" :label="item.name" :value="item.id">
                 </el-option>
               </el-select>
@@ -33,7 +33,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="标签:" class="postInfo-container-item">
-              <el-tag :key="tag" v-for="tag in postForm.tagnames" closable :disable-transitions="false" @close="handleClose(tag)">
+              <el-tag :key="tag" v-for="tag in tagnames" closable :disable-transitions="false" @close="handleClose(tag)">
                 {{tag}}
               </el-tag>
               <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
@@ -82,10 +82,8 @@ import { searchMeta } from '@/api/meta'
 const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
-  typeids: [], // 文章类型
-  tagnames: [], // 文章标签
   id: undefined,
-  is_comment: false // 是否可以评论
+  allowComment: false // 是否可以评论
 }
 
 export default {
@@ -107,6 +105,8 @@ export default {
     }
     return {
       inputVisible: false,
+      typeids: [],
+      tagnames: [],
       inputValue: '',
       postForm: Object.assign({}, defaultForm),
       loading: false,
@@ -130,7 +130,7 @@ export default {
     handleInputConfirm() {
       const inputValue = this.inputValue
       if (inputValue) {
-        this.postForm.tagnames.push(inputValue)
+        this.tagnames.push(inputValue)
       }
       this.inputVisible = false
       this.inputValue = ''
@@ -142,7 +142,7 @@ export default {
       })
     },
     handleClose(tag) {
-      this.postForm.tagnames.splice(this.postForm.tagnames.indexOf(tag), 1)
+      this.tagnames.splice(this.tagnames.indexOf(tag), 1)
     },
     fetchData(id) {
       fetchArticle().then(response => {
@@ -155,10 +155,7 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          const typeids = this.postForm.typeids.map(v => {
-            return v.id
-          })
-          createArticle(this.postForm, typeids).then(() => {
+          createArticle(this.postForm, this.typeids, this.tagnames).then(() => {
             this.$message({
               type: 'success',
               message: '发布成功!'

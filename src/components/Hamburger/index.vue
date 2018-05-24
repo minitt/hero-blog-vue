@@ -35,7 +35,6 @@ export default {
     width: 20px;
     height: 20px;
     transform: rotate(0deg);
-    transition: .38s;
     transform-origin: 50% 50%;
 }
 
