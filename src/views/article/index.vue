@@ -39,7 +39,7 @@
       <el-table-column label="状态" width="100" align="center">
         <template slot-scope="scope">
           <el-tag
-          :type="scope.row.status === 'publish' ? 'primary' : 'success'"
+          :type="scope.row.status === 'publish' ? 'success' : 'info'"
           disable-transitions>{{scope.row.status|statusFormatter}}</el-tag>
         </template>
       </el-table-column>
@@ -120,9 +120,10 @@ export default {
       this.fetchData()
     },
     handleCreate() { // 新增按钮事件
-      this.$router.push({ path: '/article/form', params: null })
+      this.$router.push({ path: '/article/form' })
     },
     handleUpdate(row) { // 修改按钮事件
+      this.$router.push({ path: '/article/form', query: { id: row.id }})
     },
     handleDel(row) { // 删除按钮事件
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {

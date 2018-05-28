@@ -20,10 +20,26 @@ export function createArticle(data, typeids, tagnames) {
   })
 }
 
-export function updateArticle(data) {
+export function draftArticle(data, typeids, tagnames) {
+  return request({
+    url: '/article/draft',
+    method: 'post',
+    params: {
+      typeids: typeids,
+      tagnames: tagnames
+    },
+    data
+  })
+}
+
+export function updateArticle(data, typeids, tagnames) {
   return request({
     url: '/article/update',
     method: 'post',
+    params: {
+      typeids: typeids,
+      tagnames: tagnames
+    },
     data
   })
 }

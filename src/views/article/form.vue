@@ -7,7 +7,7 @@
             <el-button type="info">创建form</el-button>
           </router-link>
 
-          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm()">发布
+          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
           </el-button>
           <el-button v-loading="loading" type="warning" @click="draftForm">存草稿</el-button>
       </sticky>
@@ -76,7 +76,7 @@ import MDinput from '@/components/MDinput' // 标题input组件
 import Sticky from '@/components/Sticky' // 粘性header组件
 import mavonEditor from 'mavon-editor' // Markdown编辑器
 import 'mavon-editor/dist/css/index.css' // Markdown编辑器
-import { fetchArticle, createArticle } from '@/api/article'
+import { fetchArticle, createArticle, draftArticle, updateArticle } from '@/api/article'
 import { searchMeta } from '@/api/meta'
 
 const defaultForm = {
@@ -119,7 +119,7 @@ export default {
   },
   created() {
     this.getRemoteTypeList()
-    const articleid = this.$route.params.id
+    const articleid = this.$route.query.id
     if (typeof (articleid) === 'undefined') {
       this.postForm = Object.assign({}, defaultForm)
     } else {
@@ -145,8 +145,16 @@ export default {
       this.tagnames.splice(this.tagnames.indexOf(tag), 1)
     },
     fetchData(id) {
-      fetchArticle().then(response => {
-        this.postForm = response.data
+      fetchArticle(id).then(data => {
+        if (data) {
+          data.typeSet.forEach(element => {
+            this.typeids.push(element.id)
+          })
+          data.tagSet.forEach(element => {
+            this.tagnames.push(element.name)
+          })
+          this.postForm = data
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -155,13 +163,27 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          createArticle(this.postForm, this.typeids, this.tagnames).then(() => {
-            this.$message({
-              type: 'success',
-              message: '发布成功!'
+          if (typeof (this.postForm.id) === 'undefined') {
+            createArticle(this.postForm, this.typeids, this.tagnames).then(() => {
+              this.$message({
+                type: 'success',
+                message: '发布成功!',
+                showClose: true,
+                duration: 1000
+              })
+              this.loading = false
             })
-            this.loading = false
-          })
+          } else {
+            updateArticle(this.postForm, this.typeids, this.tagnames).then(() => {
+              this.$message({
+                type: 'success',
+                message: '发布成功!',
+                showClose: true,
+                duration: 1000
+              })
+              this.loading = false
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -176,13 +198,16 @@ export default {
         })
         return
       }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
+      this.loading = true
+      draftArticle(this.postForm, this.typeids, this.tagnames).then(() => {
+        this.$message({
+          type: 'success',
+          message: '保存成功!',
+          showClose: true,
+          duration: 1000
+        })
+        this.loading = false
       })
-      this.postForm.status = 'draft'
     },
     getRemoteTypeList(query) {
       searchMeta(query).then(data => {
