@@ -21,31 +21,17 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
 **/
+
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-
-  {
-    path: '/article',
-    component: Layout,
-    children: [
-      {
-        path: 'form',
-        name: 'form',
-        component: () => import('@/views/article/form'),
-        meta: { title: '发布文章', icon: 'form' }
-      }
-    ],
-    hidden: true
-  },
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    name: 'home',
     hidden: true
   },
-
   {
     path: '',
     component: Layout,
@@ -53,68 +39,11 @@ export const constantRouterMap = [
       {
         path: 'dashboard',
         name: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/dashboard'),
         meta: { title: '首页', icon: 'home' }
       }
     ]
   },
-
-  {
-    path: '/article',
-    component: Layout,
-    redirect: '/article/index',
-    children: [
-      {
-        path: 'index',
-        name: 'article',
-        component: () => import('@/views/article/index'),
-        meta: { title: '文章管理', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/meta',
-    component: Layout,
-    redirect: '/meta/index',
-    children: [
-      {
-        path: 'index',
-        name: 'meta',
-        component: () => import('@/views/meta/index'),
-        meta: { title: '分类/标签', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/sys',
-    component: Layout,
-    redirect: '/sys/user',
-    name: 'sys',
-    meta: { title: '系统管理', icon: 'example' },
-    children: [
-      {
-        path: 'user',
-        name: 'user',
-        component: () => import('@/views/sys/user/index'),
-        meta: { title: '用户管理', icon: 'tree' }
-      },
-      {
-        path: 'template',
-        name: 'template',
-        component: () => import('@/views/sys/tpl/index'),
-        meta: { title: '模板管理', icon: 'tree' }
-      },
-      {
-        path: 'sysconfig',
-        name: 'sysconfig',
-        component: () => import('@/views/sys/sysconfig/index'),
-        meta: { title: '系统配置', icon: 'tree' }
-      }
-    ]
-  },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 
@@ -124,3 +53,4 @@ export default new Router({
   routes: constantRouterMap
 })
 
+export const asyncRouterMap = []
