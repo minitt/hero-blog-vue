@@ -30,6 +30,12 @@
       border: none;
       width: 100%;
     }
+    .scrollbar-wrapper {
+      overflow-x: hidden!important;
+      .el-scrollbar__view {
+        height: 100%;
+      }
+    }
   }
   .hideSidebar {
     .sidebar-container,.sidebar-container .el-menu {

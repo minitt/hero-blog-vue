@@ -43,8 +43,7 @@ export const constantRouterMap = [
         meta: { title: '首页', icon: 'home' }
       }
     ]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 export default new Router({
